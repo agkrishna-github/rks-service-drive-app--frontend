@@ -120,7 +120,7 @@ const Homepage = () => {
               onChange={(e) => setService(e.target.value)}
             >
               <MenuItem value="pickUp" className="hover:bg-blue-500">
-                Pick Up
+                PickUp
               </MenuItem>
               <MenuItem value="drop" className="hover:bg-blue-500">
                 Drop
