@@ -21,6 +21,7 @@ const Login = () => {
     mutationFn: loginDriver,
     onError: (error) => {
       error && setError("Autentication failed. Login Again");
+      navigate("/homepage");
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries("drivers");
