@@ -9,8 +9,8 @@ const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 const MAPBOX_DRIVING_ENDPOINT =
   "https://api.mapbox.com/directions/v5/mapbox/driving/";
 
-const MapsPage = () => {
-  const [userLocation, setUserLocation] = useState();
+const CustomerMapPage = () => {
+  /* const [userLocation, setUserLocation] = useState();
   const [destinationCordinates, setDestinationCordinates] = useState({
     lng: 78.45736,
     lat: 17.42421,
@@ -18,14 +18,23 @@ const MapsPage = () => {
   const [directionData, setDirectionData] = useState();
   const [pickupDirectionData, setPickupDirectionData] = useState();
   const [sourceCordinates, setSourceCordinates] = useState();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(true); */
+
+  const [userLocation, setUserLocation] = useState();
+  const [sourceCordinates, setSourceCordinates] = useState({
+    lng: 78.45736,
+    lat: 17.42421,
+  });
+  const [destinationCordinates, setDestinationCordinates] = useState();
+  const [directionData, setDirectionData] = useState();
+  const [dropDirectionData, setDropDirectionData] = useState();
 
   const navigate = useNavigate();
 
   console.log(directionData);
   const { state: vehState } = useLocation();
 
-  const { hno, street, area, city, state } = vehState?.pickUpData?.vehDetails;
+  const { hno, street, area, city, state } = vehState?.dropData?.vehDetails;
 
   console.log(hno, street, area, city, state);
 
@@ -47,32 +56,28 @@ const MapsPage = () => {
       });
     }
 
-    if (sourceCordinates) {
-      getPicupDirectionRoute();
+    if (destinationCordinates) {
+      getUserDirectionRoute();
     }
-    /* if (userLocation && sourceCordinates) {
-      getPicupDirectionRoute();
-    } */
-  }, [sourceCordinates]);
+  }, [destinationCordinates]);
 
-  const goToPickup = () => {
+  const startDrop = () => {
     mapRef.current?.flyTo({
       center: [userLocation?.lng, userLocation?.lat],
       duration: 2500,
       zoom: 15,
     });
-    setOpen(false);
+    // setOpen(false);
   };
 
-  const endPickup = () => {
-    navigate("/pickUpCameraComp", {
+  const arrived = () => {
+    navigate("/custCameraComp", {
       state: {
-        pickUpData: vehState?.pickUpData,
+        dropData: vehState?.dropData,
         directionData,
-        pickupDirectionData,
+        dropDirectionData,
       },
     });
-    setOpen(true);
   };
 
   useEffect(() => {
@@ -84,9 +89,9 @@ const MapsPage = () => {
     }
 
     if (sourceCordinates && destinationCordinates) {
-      getDirectionRoute();
+      getDropDirectionRoute();
     }
-  }, [sourceCordinates, destinationCordinates]);
+  }, [destinationCordinates]);
 
   useEffect(() => {
     if (sourceCordinates) {
@@ -106,7 +111,7 @@ const MapsPage = () => {
     }
   }, [userLocation]); */
 
-  const getPicupDirectionRoute = async () => {
+  const getUserDirectionRoute = async () => {
     const res = await fetch(
       MAPBOX_DRIVING_ENDPOINT +
         userLocation?.lng +
@@ -128,10 +133,10 @@ const MapsPage = () => {
 
     const result = await res.json();
     console.log(result);
-    setPickupDirectionData(result);
+    setDirectionData(result);
   };
 
-  const getDirectionRoute = async () => {
+  const getDropDirectionRoute = async () => {
     console.log("source co ordinates", sourceCordinates);
     console.log("source co ordinates", destinationCordinates);
     const res = await fetch(
@@ -155,7 +160,7 @@ const MapsPage = () => {
 
     const result = await res.json();
     console.log(result);
-    setDirectionData(result);
+    setDropDirectionData(result);
   };
 
   const getUserLocation = () => {
@@ -180,21 +185,14 @@ const MapsPage = () => {
 
     console.log(data);
 
-    setSourceCordinates({
+    setDestinationCordinates({
       lat: data.results[0]?.geometry.location.lat,
       lng: data.results[0]?.geometry.location.lng,
     });
-    console.log(sourceCordinates);
   };
 
   return (
     <div>
-      <div>
-        <h3 className="p-2 bg-blue-500 text-white">
-          Going To Customer Location
-        </h3>
-      </div>
-
       <Map
         ref={mapRef}
         mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
@@ -235,7 +233,7 @@ const MapsPage = () => {
           </Marker>
         )}
 
-        {pickupDirectionData?.routes && (
+        {dropDirectionData?.routes && (
           <Source
             type="geojson"
             data={{
@@ -243,7 +241,7 @@ const MapsPage = () => {
               geometry: {
                 type: "LineString",
                 coordinates:
-                  pickupDirectionData?.routes[0]?.geometry?.coordinates,
+                  dropDirectionData?.routes[0]?.geometry?.coordinates,
               },
             }}
           >
@@ -275,76 +273,64 @@ const MapsPage = () => {
         )}
       </Map>
 
-      {pickupDirectionData?.routes && (
-        <div className="p-5 shadow shadow-black bg-yellow-200">
-          <h4 className="mt-5 bg-blue-500 text-white p-2">
-            To Pickup Location
-          </h4>
+      {directionData?.routes && (
+        <div className="mt-10 p-5 shadow shadow-black">
+          <h5 className="mt-5">To Workshop</h5>
+          <p className="mt-5">
+            Distance : {(directionData?.routes[0]?.distance * 0.001).toFixed(2)}{" "}
+            Kms
+          </p>
+          <p className="mt-5">
+            Duration : {(directionData?.routes[0]?.duration / 60).toFixed(2)}{" "}
+            Min
+          </p>
+        </div>
+      )}
+      {dropDirectionData?.routes && (
+        <div className="mt-10 p-5 shadow shadow-black">
+          <h5 className="mt-5">To Drop</h5>
           <p className="mt-5">
             Distance :{" "}
-            <b>
-              {(pickupDirectionData?.routes[0]?.distance * 0.001).toFixed(2)}{" "}
-              Kms
-            </b>
+            {(dropDirectionData?.routes[0]?.distance * 0.001).toFixed(2)} Kms
           </p>
           <p className="mt-5">
             Duration :{" "}
-            <b>
-              {(pickupDirectionData?.routes[0]?.duration / 60).toFixed(2)} Min
-            </b>
+            {(dropDirectionData?.routes[0]?.duration / 60).toFixed(2)} Min
           </p>
-        </div>
-      )}
-      {directionData?.routes && (
-        <div
-          className={!open ? "hidden" : "p-5 shadow shadow-black bg-yellow-200"}
-        >
-          <h4 className="mt-5 bg-blue-500 text-white p-2">
-            To Workshop Location
-          </h4>
-          <p className="mt-5">
-            {" "}
-            Distance :{" "}
-            <b>{(directionData?.routes[0]?.distance * 0.001).toFixed(2)} Kms</b>
-          </p>
-          <p className="mt-5">
-            {" "}
-            Duration :
-            <b>{(directionData?.routes[0]?.duration / 60).toFixed(2)} Min</b>
-          </p>
+          <div className="mt-10 flex gap-5">
+            <div>
+              <Button
+                variant="contained"
+                className="p-3 ms-3"
+                onClick={startDrop}
+              >
+                Start Drop
+              </Button>
+            </div>
+            <div>
+              <Button
+                variant="contained"
+                className=" p-3 ms-3"
+                onClick={arrived}
+              >
+                Arrived
+              </Button>
+            </div>
+          </div>
         </div>
       )}
 
-      <div className="mt-10 flex gap-5">
-        <div
-          className={
-            !open
-              ? "hidden"
-              : "flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] mb-20"
-          }
+      {/*  <div className="mt-10 ms-5 mb-20">
+        <Button
+          variant="contained"
+          className="inline-block w-[250px] mx-auto p-3 me-5"
+          onClick={reachedWorkShop}
         >
-          <h4
-            className="w-[300px] p-3 border  bg-blue-600 text-white text-center"
-            onClick={goToPickup}
-          >
-            Go To Pickup Location
-          </h4>
-        </div>
-        <div
-          className={
-            open
-              ? "hidden"
-              : "flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] "
-          }
-          onClick={endPickup}
-        >
-          <h4 className="w-[300px] p-3 border  bg-red-600 text-white text-center">
-            Reached Pickup Location
-          </h4>
-        </div>
-      </div>
+          Reached Workshop
+        </Button>
+      </div> */}
     </div>
   );
 };
 
-export default MapsPage;
+export default CustomerMapPage;

@@ -17,6 +17,7 @@ const WorkshopMapPage = () => {
     lat: 17.42421,
   });
   const [directionData, setDirectionData] = useState();
+  const [open, setOpen] = useState(true);
 
   const navigate = useNavigate();
 
@@ -32,6 +33,7 @@ const WorkshopMapPage = () => {
       setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
     });
     console.log(userLocation);
+    setOpen(false);
   };
 
   //   getUserLocation();
@@ -44,10 +46,10 @@ const WorkshopMapPage = () => {
   }, [userLocation]);
 
   useEffect(() => {
-    if (destinationCordinates) {
+    if (userLocation && destinationCordinates) {
       getDirectionRoute();
     }
-  }, [destinationCordinates]);
+  }, [userLocation && destinationCordinates]);
 
   const getDirectionRoute = async () => {
     const res = await fetch(
@@ -76,10 +78,14 @@ const WorkshopMapPage = () => {
 
   const pickupCompleted = () => {
     navigate("/workShopCam");
+    setOpen(true);
   };
 
   return (
     <div>
+      <div>
+        <h3 className="p-2 bg-blue-500 text-white">Going To Workshop</h3>
+      </div>
       <Map
         ref={mapRef}
         mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
@@ -132,37 +138,47 @@ const WorkshopMapPage = () => {
       </Map>
 
       {directionData?.routes && (
-        <div className="mt-10 p-5 shadow shadow-black">
-          <h5 className="mt-5">Pickup - Workshop</h5>
+        <div className="p-5 shadow shadow-black bg-yellow-200">
+          <h4 className="mt-5">Pickup To Workshop</h4>
           <p className="mt-5">
-            Distance : {(directionData?.routes[0]?.distance * 0.001).toFixed(2)}{" "}
-            Kms
+            Distance :
+            <b>{(directionData?.routes[0]?.distance * 0.001).toFixed(2)} Kms</b>
           </p>
           <p className="mt-5">
-            Duration : {(directionData?.routes[0]?.duration / 60).toFixed(2)}{" "}
-            Min
+            Duration :
+            <b>{(directionData?.routes[0]?.duration / 60).toFixed(2)} Min</b>
           </p>
         </div>
       )}
 
-      <div className="mt-10 ms-10">
-        <Button
-          variant="contained"
-          className="inline-block w-[150px] mx-auto p-3 me-5"
+      <div
+        className={
+          open
+            ? "flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] mt-10"
+            : "hidden"
+        }
+      >
+        <h4
+          className="w-[300px] p-3 border  bg-blue-600 text-white text-center"
           onClick={getUserLocation}
         >
-          Get Location
-        </Button>
+          Get Workshop Location
+        </h4>
       </div>
 
-      <div className="mt-10 ms-10">
-        <Button
-          variant="contained"
-          className="inline-block mx-auto p-3 me-5"
+      <div
+        className={
+          !open
+            ? "flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] mt-10"
+            : "hidden"
+        }
+      >
+        <h4
+          className="w-[300px] p-3 border  bg-blue-600 text-white text-center"
           onClick={pickupCompleted}
         >
-          Pick Up Completed
-        </Button>
+          Reached Work Shop
+        </h4>
       </div>
     </div>
   );

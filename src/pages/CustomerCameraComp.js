@@ -5,13 +5,16 @@ import cloud from "../images/cloud1.png";
 import Button from "@mui/material/Button";
 
 import axios from "axios";
-import toast from "react-hot-toast";
 
-const WorkShopCam = () => {
+const CustomerCameraComp = () => {
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
 
   const navigate = useNavigate();
+
+  const { state } = useLocation();
+
+  const { dropData, directionData, pickupDirectionData } = state;
 
   useEffect(() => {
     const formData = new FormData();
@@ -50,16 +53,29 @@ const WorkShopCam = () => {
 
   console.log(files);
 
-  const pickupCompleted = () => {
-    toast.success("Pickup Completed");
-    navigate("/homepage");
+  const dropCompleted = async () => {
+    const postDropData = {
+      images: images,
+      dropData: dropData,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8090/api/v1/dropData/addDropData",
+        postDropData
+      );
+
+      if (response?.data?.success) {
+        navigate("/homepage");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <section className="min-h-screen flex flex-col gap-y-3 justify-center items-center">
-      <h4 className="p-3 bg-blue-500 text-white w-full">
-        Vehicle Handover To Workshop
-      </h4>
+      <h4>Vehicle Handover To Customer</h4>
       <div className="min-h-[300px] w-[90%] mx-auto shadow shadow-black  p-3 mt-3 flex flex-wrap gap-3">
         <div className="bg-white h-full camera text-end relative">
           <div>
@@ -92,17 +108,18 @@ const WorkShopCam = () => {
         </div>
       </div>
       {images.length !== 0 && (
-        <div className="flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] mb-20 mt-10">
-          <h4
-            className="w-[300px] p-3 border  bg-blue-600 text-white text-center"
-            onClick={pickupCompleted}
+        <div className="mt-3 ">
+          <Button
+            variant="contained"
+            className="block w-[200px] mx-auto p-3 bg-blue-400 text-white"
+            onClick={dropCompleted}
           >
-            Upload and Complete
-          </h4>
+            Completed
+          </Button>
         </div>
       )}
     </section>
   );
 };
 
-export default WorkShopCam;
+export default CustomerCameraComp;

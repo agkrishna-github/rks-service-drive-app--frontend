@@ -59,6 +59,8 @@ const Login = () => {
     handleChange,
     handleSubmit,
     isSubmitting,
+    isValid,
+    dirty,
   } = useFormik({
     initialValues,
     validationSchema,
@@ -111,12 +113,7 @@ const Login = () => {
             )}
           </div>
 
-          <Button
-            variant="contained"
-            disabled={isSubmitting}
-            type="submit"
-            className="p-2 w-[75%]"
-          >
+          <Button variant="contained" type="submit" className="p-2 w-[75%]">
             Submit
           </Button>
         </form>

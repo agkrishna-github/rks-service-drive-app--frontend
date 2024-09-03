@@ -6,10 +6,10 @@ import axios from "axios";
 import cloud from "../images/cloud1.png";
 import Button from "@mui/material/Button";
 
-const PickUpCameraComp = () => {
+const DropCameraComp = () => {
   const { state } = useLocation();
 
-  const { pickUpData, directionData, pickupDirectionData } = state;
+  const { dropData, directionData, dropDirectionData } = state;
 
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
@@ -54,31 +54,15 @@ const PickUpCameraComp = () => {
 
   console.log(files);
 
-  const pickupCompleted = async () => {
-    try {
-      const postPickupData = {
-        images,
-        pickUpData,
-      };
-
-      const response = await axios.post(
-        `http://localhost:8090/api/v1/pickUpData/addPickUpData`,
-        postPickupData
-      );
-      console.log(response?.data);
-      if (response?.data?.success) {
-        navigate("/workShopMapPage");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const goToDrop = () => {
+    navigate("/customerMapPage", {
+      state: { images: images, dropData: dropData },
+    });
   };
-
-  console.log(images, pickUpData);
 
   return (
     <section className="min-h-screen flex flex-col gap-y-3 justify-center items-center">
-      <h4 className="p-3 bg-blue-500 text-white w-full">Vehicle Photos</h4>
+      <h4>Drop Vehicle Photos</h4>
       <div className="min-h-[500px] w-[90%] mx-auto shadow shadow-black bg-blue-300 p-3 mt-3 flex flex-wrap gap-3">
         <div className="bg-white w-[150px] h-[150px] camera text-end relative">
           <div>
@@ -230,13 +214,14 @@ const PickUpCameraComp = () => {
         </div> */}
       </div>
       {images.length === 2 && (
-        <div className="flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] ">
-          <h4
-            className="w-[300px] p-3 border  bg-blue-600 text-white text-center"
-            onClick={pickupCompleted}
+        <div className="mt-3 ">
+          <Button
+            variant="contained"
+            className="block w-[200px] mx-auto p-3 bg-blue-400 text-white"
+            onClick={goToDrop}
           >
-            Upload
-          </h4>
+            Go To Drop
+          </Button>
         </div>
       )}
       {/* 
@@ -273,4 +258,4 @@ const PickUpCameraComp = () => {
   );
 };
 
-export default PickUpCameraComp;
+export default DropCameraComp;

@@ -42,21 +42,34 @@ const Homepage = () => {
     });
   };
 
-  const goToDrop = () => {
-    /* const dropData = {
-       empId: auth?.user?.id,
-       vehDetails: vehicleData?.data?.foundVehicle,
-       service: service,
-     };
-     navigate("/pickUpCameraComp", {
-       state: { pickUpData: pickupData },
-     }); */
+  const goToWorkshop = () => {
+    const dropData = {
+      empId: auth?.user?.id,
+      vehDetails: vehicleData?.data?.foundVehicle,
+      service: service,
+    };
+    navigate("/dropMapPage", {
+      state: { dropData: dropData },
+    });
+  };
+
+  const logOut = () => {
+    localStorage.removeItem("user");
+    navigate("/homepage");
   };
 
   return (
     <section className="min-h-screen bg-blue-300 flex justify-center items-center">
-      <div className="p-5 md:w-11/12 md:mx-auto md:h-[75%] md:my-auto shadow shadow-black bg-white rounded-md flex flex-col  gap-y-10">
-        <h3 className="p-3 bg-gray-400">{auth?.user?.driver} Logged in</h3>
+      <div className="p-5 md:w-11/12 md:mx-auto md:min-h-[75%] md:my-auto shadow shadow-black bg-white rounded-md flex flex-col  gap-y-10">
+        <div
+          className="bg-black self-end text-white p-3 text-center"
+          onClick={logOut}
+        >
+          Logout
+        </div>
+        <h3 className="p-3 bg-blue-500 text-white">
+          {(auth?.user?.driver).toUpperCase()} Logged in
+        </h3>
 
         <div className="mt-10">
           <TextField
@@ -74,6 +87,7 @@ const Homepage = () => {
           <Button
             variant="contained"
             type="button"
+            disabled={!regNum ? true : false}
             onClick={() => getSingleVehicleDetails()}
             className="block p-3 w-[200px] mx-auto"
           >
@@ -114,27 +128,25 @@ const Homepage = () => {
             </Select>
           </div>
 
-          {service && service === "pickUp" ? (
-            <div className="mt-5 p-3">
-              <Button
-                type="button"
-                variant="contained"
-                className="block p-3 w-[200px] mx-auto"
+          {service && service === "pickUp" && (
+            <div className="flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] mb-20 mt-10">
+              <h4
+                className="w-[300px] p-3 border  bg-blue-600 text-white text-center"
                 onClick={goToPickup}
               >
                 Go To Pickup
-              </Button>
+              </h4>
             </div>
-          ) : (
-            <div className="mt-5">
-              <Button
-                type="button"
-                variant="contained"
-                className="block p-3 w-[200px] mx-auto"
-                onClick={goToDrop}
+          )}
+
+          {service && service === "drop" && (
+            <div className="flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] mb-20 mt-10">
+              <h4
+                className="w-[300px] p-3 border  bg-blue-600 text-white text-center"
+                onClick={goToWorkshop}
               >
-                Go To Drop
-              </Button>
+                Go To Workshop
+              </h4>
             </div>
           )}
         </div>
