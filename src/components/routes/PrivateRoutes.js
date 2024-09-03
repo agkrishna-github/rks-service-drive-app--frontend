@@ -1,9 +1,9 @@
 import { useLocation, Navigate, Outlet } from "react-router-dom";
-
+import { useAuth } from "../contextApi/auth";
 export default function PrivateRoutes() {
   const location = useLocation();
 
-  const auth = JSON.parse(localStorage.getItem("user"));
+  const [auth] = useAuth();
 
   const content = auth?.user ? (
     <Outlet />

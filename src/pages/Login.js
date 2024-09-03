@@ -25,10 +25,10 @@ const Login = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries("drivers");
 
-      localStorage.setItem(
+      /* localStorage.setItem(
         "user",
         JSON.stringify({ user: data, token: data?.accessToken })
-      );
+      ); */
       setAuth({ user: data, token: data?.accessToken });
       toast.success("Driver Logged in Successfully");
       navigate("/homepage");
