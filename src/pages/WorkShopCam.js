@@ -30,7 +30,7 @@ const WorkShopCam = () => {
       imgData
     );
 
-    const uploadedImages = await response.data;
+    const uploadedImages = response.data;
     setImages(uploadedImages);
     console.log(uploadedImages);
   };

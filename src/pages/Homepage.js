@@ -35,10 +35,13 @@ const Homepage = () => {
       const response = await axios.get(
         `${baseURL}/api/v1/vehicle/get-vehicle-details/${rNum}`
       );
-      console.log(response?.data);
-      if (response?.data?.success) {
-        console.log(response?.data);
-        setVehicleData(response?.data?.foundVehicle);
+
+      const vehicleData = response?.data;
+
+      console.log(vehicleData);
+      if (vehicleData?.success) {
+        console.log(vehicleData);
+        setVehicleData(vehicleData?.foundVehicle);
         return;
       } else {
         toast.error("Error in fetching vehicle data");

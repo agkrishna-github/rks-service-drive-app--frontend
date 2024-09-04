@@ -24,9 +24,12 @@ const Login = () => {
         `${baseURL}/api/v1/driver/login-driver`,
         loginData
       );
-      console.log(response?.data);
-      if (response?.data?.success) {
-        setAuth({ user: response?.data, token: response?.data?.accessToken });
+
+      const loginDataRes = response?.data;
+
+      console.log(loginDataRes);
+      if (loginDataRes?.success) {
+        setAuth({ user: loginDataRes, token: loginDataRes?.accessToken });
         navigate("/homepage");
         return;
       } else {
