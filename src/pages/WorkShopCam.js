@@ -10,14 +10,14 @@ import { useVehicleContext } from "../components/contextApi/vehiclesApi";
 const WorkShopCam = () => {
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
-  const [source, setSource] = useState([]);
+  const [source, setSource] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [isCompLoading, setIsCompLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const { vehImages, singleVehicleData } = useVehicleContext();
-
+  /* 
   const addImage = async (imgData) => {
     setIsLoading(true);
 
@@ -28,18 +28,30 @@ const WorkShopCam = () => {
 
     const response = await axios.post(
       "http://localhost:8090/api/v1/image/addImages",
-      formData
+      formData,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
 
-    const uploadedImages = response?.data;
+    const jsonData = await response.json();
 
-    if (uploadedImages?.success) {
-      setImages(uploadedImages?.images);
-      setIsLoading(false);
-      return;
-    }
+    console.log(jsonData);
+
+    const uploadedImages = jsonData?.data;
+
+    console.log(uploadedImages);
+
+    setImages(uploadedImages?.images);
+    setIsLoading(false);
+    return;
+
     console.log(uploadedImages);
   };
+ */
 
   const handleCapture = (e) => {
     console.log(e);
@@ -49,21 +61,17 @@ const WorkShopCam = () => {
       if (e.target.files.length !== 0) {
         const file = e.target.files[0];
         const newUrl = URL.createObjectURL(file);
-        setSource([...source, newUrl]);
-        setFiles([...files, file]);
-        addImage();
+        setSource(newUrl);
       }
     }
   };
-
-  console.log(files);
 
   const pickupCompleted = async () => {
     setIsCompLoading(true);
 
     try {
       const postPickupData = {
-        workShopImages: images,
+        workShopImage: source,
         vehImages,
         pickUpData: singleVehicleData,
       };
@@ -74,11 +82,10 @@ const WorkShopCam = () => {
       );
 
       console.log(response?.data);
-      if (response?.data?.success) {
-        setIsCompLoading(false);
-        toast.success("Completed");
-        navigate("/homepage");
-      }
+
+      setIsCompLoading(false);
+      toast.success("Completed");
+      navigate("/homepage");
     } catch (error) {
       console.log(error);
     }
@@ -100,7 +107,7 @@ const WorkShopCam = () => {
           <div>
             <div className="w-[300px] h-[300px]">
               <img
-                src={source[0] || cloud}
+                src={source || cloud}
                 alt={"snap"}
                 className="w-full h-full"
                 width={400}
@@ -126,7 +133,7 @@ const WorkShopCam = () => {
           </div>
         </div>
       </div>
-      {source.length !== 0 && (
+      {source && (
         <div className="flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] mb-20 mt-10">
           <h4
             className="w-[300px] p-3 border  bg-blue-600 text-white text-center"

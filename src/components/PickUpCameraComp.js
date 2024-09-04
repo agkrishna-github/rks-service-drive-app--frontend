@@ -9,38 +9,51 @@ import { useVehicleContext } from "./contextApi/vehiclesApi";
 const PickUpCameraComp = () => {
   const { singleVehicleData, setVehicleImages } = useVehicleContext();
 
+  console.log(singleVehicleData);
+  console.log(setVehicleImages);
+
   const [images, setImages] = useState([]);
-  const [files, setFiles] = useState([]);
-  const [source, setSource] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   console.log(images);
+  const [files, setFiles] = useState([]);
+  console.log(files);
+  const [source, setSource] = useState([]);
+  console.log(source);
+  const [isLoading, setIsLoading] = useState(false);
+  console.log(isLoading);
 
   const navigate = useNavigate();
-
+  /* 
   const addImage = async () => {
-    setIsLoading(true);
+    try {
+      setIsLoading(true);
 
-    const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append("images", files[i]);
-    }
+      const formData = new FormData();
+      console.log(files);
+      for (let i = 0; i < files.length; i++) {
+        formData.append("images", files[i]);
+      }
 
-    const response = await axios.post(
-      "http://localhost:8090/api/v1/image/addImages",
-      formData
-    );
+      console.log(formData);
 
-    const uploadedImages = response?.data;
+      const response = await axios.post(
+        "http://localhost:8090/api/v1/image/addImages",
+        formData
+      );
 
-    if (uploadedImages?.success) {
+      console.log(response);
+
+      console.log(response.data);
+      console.log(response?.data);
+
+    
       setImages(uploadedImages?.images);
       setVehicleImages(uploadedImages?.images);
+      
       setIsLoading(false);
-      return;
+    } catch (error) {
+      console.log(error);
     }
-
-    console.log(uploadedImages);
-  };
+  }; */
 
   const handleCapture = (e) => {
     console.log(e);
@@ -52,8 +65,6 @@ const PickUpCameraComp = () => {
         const newUrl = URL.createObjectURL(file);
 
         setSource([...source, newUrl]);
-        setFiles([...files, file]);
-        addImage();
       }
     }
   };
@@ -61,6 +72,7 @@ const PickUpCameraComp = () => {
   console.log(source);
 
   const pickupCompleted = async () => {
+    setVehicleImages(source);
     navigate("/workShopMapPage");
   };
 
