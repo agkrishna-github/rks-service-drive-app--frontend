@@ -34,7 +34,7 @@ const WorkShopCam = () => {
     setImages(uploadedImages);
     console.log(uploadedImages);
   };
-
+  console.log(images);
   const handleCapture = (e) => {
     console.log(e);
 
