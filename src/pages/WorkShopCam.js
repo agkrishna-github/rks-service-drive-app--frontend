@@ -18,19 +18,17 @@ const WorkShopCam = () => {
 
   const { vehImages, singleVehicleData } = useVehicleContext();
 
-  useEffect(() => {
+  const addImage = async (imgData) => {
+    setIsLoading(true);
+
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
       formData.append("images", files[i]);
     }
-    if (files.length) addImage(formData);
-  }, [files]);
 
-  const addImage = async (imgData) => {
-    setIsLoading(true);
     const response = await axios.post(
       "http://localhost:8090/api/v1/image/addImages",
-      imgData
+      formData
     );
 
     const uploadedImages = response?.data;
@@ -38,6 +36,7 @@ const WorkShopCam = () => {
     if (uploadedImages?.success) {
       setImages(uploadedImages?.images);
       setIsLoading(false);
+      return;
     }
     console.log(uploadedImages);
   };
@@ -52,6 +51,7 @@ const WorkShopCam = () => {
         const newUrl = URL.createObjectURL(file);
         setSource([...source, newUrl]);
         setFiles([...files, file]);
+        addImage();
       }
     }
   };

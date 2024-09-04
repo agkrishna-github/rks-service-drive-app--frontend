@@ -17,20 +17,17 @@ const PickUpCameraComp = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const addImage = async () => {
+    setIsLoading(true);
+
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
       formData.append("images", files[i]);
     }
-    if (files.length) addImage(formData);
-  }, [files]);
-
-  const addImage = async (imgData) => {
-    setIsLoading(true);
 
     const response = await axios.post(
       "http://localhost:8090/api/v1/image/addImages",
-      imgData
+      formData
     );
 
     const uploadedImages = response?.data;
@@ -39,6 +36,7 @@ const PickUpCameraComp = () => {
       setImages(uploadedImages?.images);
       setVehicleImages(uploadedImages?.images);
       setIsLoading(false);
+      return;
     }
 
     console.log(uploadedImages);
@@ -52,8 +50,10 @@ const PickUpCameraComp = () => {
       if (e.target.files.length !== 0) {
         const file = e.target.files[0];
         const newUrl = URL.createObjectURL(file);
+
         setSource([...source, newUrl]);
         setFiles([...files, file]);
+        addImage();
       }
     }
   };
