@@ -35,9 +35,9 @@ const PickUpCameraComp = () => {
 
     const uploadedImages = response?.data;
 
-    if (uploadedImages) {
-      setImages(uploadedImages);
-      setVehicleImages(uploadedImages);
+    if (uploadedImages?.success) {
+      setImages(uploadedImages?.images);
+      setVehicleImages(uploadedImages?.images);
       setIsLoading(false);
     }
 

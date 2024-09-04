@@ -35,8 +35,8 @@ const WorkShopCam = () => {
 
     const uploadedImages = response?.data;
 
-    if (uploadedImages) {
-      setImages(uploadedImages);
+    if (uploadedImages?.success) {
+      setImages(uploadedImages?.images);
       setIsLoading(false);
     }
     console.log(uploadedImages);
