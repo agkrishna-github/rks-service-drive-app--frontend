@@ -27,7 +27,7 @@ const MapsPage = () => {
   const navigate = useNavigate();
 
   console.log(directionData);
-  const { state: vehState } = useLocation();
+
   console.log(singleVehicleData);
 
   /* 
@@ -179,8 +179,6 @@ const MapsPage = () => {
     });
     console.log(userLocation);
   };
-
-  useEffect(() => {}, []);
 
   const getCoordinates = async (address) => {
     const response = await fetch(
