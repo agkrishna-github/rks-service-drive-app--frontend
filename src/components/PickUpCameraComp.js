@@ -11,6 +11,7 @@ const PickUpCameraComp = () => {
 
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
+  const [source, setSource] = useState([]);
   console.log(images);
 
   const navigate = useNavigate();
@@ -42,12 +43,14 @@ const PickUpCameraComp = () => {
     if (e.target.files) {
       if (e.target.files.length !== 0) {
         const file = e.target.files[0];
+        const newUrl = URL.createObjectURL(file);
+        setSource([...source, newUrl]);
         setFiles([...files, file]);
       }
     }
   };
 
-  console.log(files);
+  console.log(source);
 
   const pickupCompleted = async () => {
     navigate("/workShopMapPage");
@@ -61,7 +64,7 @@ const PickUpCameraComp = () => {
           <div>
             <div className="maindiv ">
               <img
-                src={images[0]?.url || cloud}
+                src={source[0] || cloud}
                 alt={"snap"}
                 className="imgdiv"
                 width={200}
@@ -90,7 +93,7 @@ const PickUpCameraComp = () => {
           <div>
             <div className="maindiv ">
               <img
-                src={images[1]?.url || cloud}
+                src={source[1] || cloud}
                 alt={"snap"}
                 className="imgdiv"
               ></img>

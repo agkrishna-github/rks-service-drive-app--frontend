@@ -10,6 +10,7 @@ import { useVehicleContext } from "../components/contextApi/vehiclesApi";
 const WorkShopCam = () => {
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
+  const [source, setSource] = useState([]);
 
   const navigate = useNavigate();
 
@@ -41,11 +42,9 @@ const WorkShopCam = () => {
     if (e.target.files) {
       if (e.target.files.length !== 0) {
         const file = e.target.files[0];
-        setFiles([...files, file]);
-        /* 
-        console.log(file);
         const newUrl = URL.createObjectURL(file);
-        setImages([...images, newUrl]); */
+        setSource([...source, newUrl]);
+        setFiles([...files, file]);
       }
     }
   };
@@ -84,7 +83,7 @@ const WorkShopCam = () => {
           <div>
             <div className="w-[300px] h-[300px]">
               <img
-                src={images[0]?.url || cloud}
+                src={source[0] || cloud}
                 alt={"snap"}
                 className="w-full h-full"
                 width={400}
