@@ -6,7 +6,7 @@ import PrivateRoutes from "./components/routes/PrivateRoutes";
 import Homepage from "./pages/Homepage";
 import MapsPage from "./pages/MapsPage";
 import PickUpCameraComp from "./components/PickUpCameraComp";
-import CameraComp from "./components/CameraComp";
+
 import PickUpMapComp from "./pages/PickUpMapComp";
 import "mapbox-gl/dist/mapbox-gl.css";
 import WorkShopCam from "./pages/WorkShopCam";
@@ -21,19 +21,19 @@ function App() {
     <div>
       <Routes>
         <Route path="/" element={<Login />} />
-        {/* <Route element={<PrivateRoutes />}> */}
-        <Route path="homepage" element={<Homepage />} />
-        <Route path="mapPage" element={<MapsPage />} />
-        <Route path="dropMapPage" element={<DropMapPage />} />
-        {/* <Route path="/pickUpMapComp" element={<PickUpMapComp />} /> */}
-        <Route path="/pickUpCameraComp" element={<PickUpCameraComp />} />
-        <Route path="/dropCameraComp" element={<DropCameraComp />} />
-        <Route path="/workShopCam" element={<WorkShopCam />} />
-        <Route path="/workShopMapPage" element={<WorkshopMapPage />} />
-        <Route path="/customerMapPage" element={<CustomerMapPage />} />
-        <Route path="/custCameraComp" element={<CustomerCameraComp />} />
-        {/* <Route path="/cameraComp" element={<CameraComp />} /> */}
-        {/* </Route> */}
+        <Route element={<PrivateRoutes />}>
+          <Route path="homepage" element={<Homepage />} />
+          <Route path="mapPage" element={<MapsPage />} />
+          <Route path="dropMapPage" element={<DropMapPage />} />
+          {/* <Route path="/pickUpMapComp" element={<PickUpMapComp />} /> */}
+          <Route path="pickUpCameraComp" element={<PickUpCameraComp />} />
+          <Route path="dropCameraComp" element={<DropCameraComp />} />
+          <Route path="workShopCam" element={<WorkShopCam />} />
+          <Route path="workShopMapPage" element={<WorkshopMapPage />} />
+          <Route path="customerMapPage" element={<CustomerMapPage />} />
+          <Route path="custCameraComp" element={<CustomerCameraComp />} />
+          {/* <Route path="/cameraComp" element={<CameraComp />} /> */}
+        </Route>
       </Routes>
     </div>
   );

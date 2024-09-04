@@ -4,6 +4,8 @@ import pin from "../images/pin.png";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { useVehicleContext } from "../components/contextApi/vehiclesApi";
+
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 const MAPBOX_DRIVING_ENDPOINT =
@@ -20,12 +22,33 @@ const MapsPage = () => {
   const [sourceCordinates, setSourceCordinates] = useState();
   const [open, setOpen] = useState(true);
 
+  const { singleVehicleData } = useVehicleContext();
+
   const navigate = useNavigate();
 
   console.log(directionData);
   const { state: vehState } = useLocation();
+  console.log(singleVehicleData);
 
-  const { hno, street, area, city, state } = vehState?.pickUpData?.vehDetails;
+  /* 
+  {
+    console.log(singleVehicleData);
+  area: "Sanath Nagar";
+  city: "Hyderabad";
+  color: "SIZZILING RED";
+  custName: "K SUKUMAR";
+  hno: "22-13";
+  mandal: "Hyderabad";
+  phoneNum: "9845685214";
+  pincode: "500040";
+  regNum: "TS10FF1010";
+  state: "Telangana";
+  street: "SRINIVAS NAGAR";
+  vehicleModel: "MARUTI ALTO 800 VXI";
+  _id: "66d13559e6c2d49382787451";
+} */
+
+  const { hno, street, area, city, state } = singleVehicleData;
 
   console.log(hno, street, area, city, state);
 
@@ -50,9 +73,6 @@ const MapsPage = () => {
     if (sourceCordinates) {
       getPicupDirectionRoute();
     }
-    /* if (userLocation && sourceCordinates) {
-      getPicupDirectionRoute();
-    } */
   }, [sourceCordinates]);
 
   const goToPickup = () => {
@@ -65,13 +85,7 @@ const MapsPage = () => {
   };
 
   const endPickup = () => {
-    navigate("/pickUpCameraComp", {
-      state: {
-        pickUpData: vehState?.pickUpData,
-        directionData,
-        pickupDirectionData,
-      },
-    });
+    navigate("/pickUpCameraComp");
     setOpen(true);
   };
 

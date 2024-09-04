@@ -9,27 +9,25 @@ import reportWebVitals from "./reportWebVitals";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // import { ReactQueryDevtools } from "react-query/devtools";
 import { Toaster } from "react-hot-toast";
-import { AuthProvider } from "./components/contextApi/auth";
-import "mapbox-gl/dist/mapbox-gl.css";
 
-const queryClient = new QueryClient();
+import "mapbox-gl/dist/mapbox-gl.css";
+import { AuthProvider } from "./components/contextApi/auth";
+import { VehiclesProvider } from "./components/contextApi/vehiclesApi";
 
 // window.onload = window.localStorage.clear();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
+  <AuthProvider>
+    <VehiclesProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/*" element={<App />} />
-        </Routes>
+        <App />
         <Toaster />
       </BrowserRouter>
-    </AuthProvider>
-    {/* <ReactQueryDevtools initialIsOpen /> */}
-  </QueryClientProvider>
+    </VehiclesProvider>
+  </AuthProvider>
+
   // </React.StrictMode>
 );
 

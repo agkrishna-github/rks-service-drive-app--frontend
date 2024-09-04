@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaCamera } from "react-icons/fa";
-import CameraComp from "./CameraComp";
 import axios from "axios";
 import cloud from "../images/cloud1.png";
 import Button from "@mui/material/Button";

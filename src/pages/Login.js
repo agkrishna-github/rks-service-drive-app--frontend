@@ -2,39 +2,41 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { useQueryClient } from "@tanstack/react-query";
-import { useQuery, useMutation } from "@tanstack/react-query";
+
 import * as Yup from "yup";
-import { loginDriver } from "../api/loginApi";
+
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../components/contextApi/auth";
+import axios from "axios";
+import { baseURL } from "../utils/baseUrl";
 
 const Login = () => {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const [auth, setAuth] = useAuth();
+  const { auth, setAuth } = useAuth();
   const [error, setError] = useState();
 
-  const loginDriverMutation = useMutation({
-    mutationFn: loginDriver,
-    onError: (error) => {
-      error && setError("Autentication failed. Login Again");
-      navigate("/homepage");
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries("drivers");
-
-      /* localStorage.setItem(
-        "user",
-        JSON.stringify({ user: data, token: data?.accessToken })
-      ); */
-      setAuth({ user: data, token: data?.accessToken });
-      toast.success("Driver Logged in Successfully");
-      navigate("/homepage");
-    },
-  });
+  const login = async (loginData) => {
+    try {
+      const response = await axios.post(
+        `${baseURL}/api/v1/driver/login-driver`,
+        loginData
+      );
+      console.log(response?.data);
+      if (response?.data?.success) {
+        setAuth({ user: response?.data, token: response?.data?.accessToken });
+        navigate("/homepage");
+        return;
+      } else {
+        toast.error("Authorizatin failed Please login again");
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const initialValues = {
     empId: "",
@@ -47,7 +49,7 @@ const Login = () => {
   });
 
   const onSubmit = (values, actions) => {
-    loginDriverMutation.mutate(values);
+    login(values);
 
     actions.resetForm();
   };

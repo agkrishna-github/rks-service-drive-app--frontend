@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaCamera } from "react-icons/fa";
-import CameraComp from "./CameraComp";
 import axios from "axios";
 import cloud from "../images/cloud1.png";
 import Button from "@mui/material/Button";
+import { useVehicleContext } from "./contextApi/vehiclesApi";
 
 const PickUpCameraComp = () => {
-  const { state } = useLocation();
-
-  const { pickUpData, directionData, pickupDirectionData } = state;
+  const { singleVehicleData, setVehicleImages } = useVehicleContext();
 
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
@@ -33,6 +31,7 @@ const PickUpCameraComp = () => {
 
     const uploadedImages = await response.data;
     setImages(uploadedImages);
+    setVehicleImages(uploadedImages);
     console.log(uploadedImages);
   };
 
@@ -44,10 +43,6 @@ const PickUpCameraComp = () => {
       if (e.target.files.length !== 0) {
         const file = e.target.files[0];
         setFiles([...files, file]);
-        /* 
-        console.log(file);
-        const newUrl = URL.createObjectURL(file);
-        setImages([...images, newUrl]); */
       }
     }
   };
@@ -55,26 +50,8 @@ const PickUpCameraComp = () => {
   console.log(files);
 
   const pickupCompleted = async () => {
-    try {
-      const postPickupData = {
-        images,
-        pickUpData,
-      };
-
-      const response = await axios.post(
-        `http://localhost:8090/api/v1/pickUpData/addPickUpData`,
-        postPickupData
-      );
-      console.log(response?.data);
-      if (response?.data?.success) {
-        navigate("/workShopMapPage");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    navigate("/workShopMapPage");
   };
-
-  console.log(images, pickUpData);
 
   return (
     <section className="min-h-screen flex flex-col gap-y-3 justify-center items-center">

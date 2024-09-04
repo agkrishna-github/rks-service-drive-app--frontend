@@ -3,15 +3,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaCamera } from "react-icons/fa";
 import cloud from "../images/cloud1.png";
 import Button from "@mui/material/Button";
-
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useVehicleContext } from "../components/contextApi/vehiclesApi";
 
 const WorkShopCam = () => {
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
 
   const navigate = useNavigate();
+
+  const { vehImages, singleVehicleData } = useVehicleContext();
 
   useEffect(() => {
     const formData = new FormData();
@@ -50,9 +52,26 @@ const WorkShopCam = () => {
 
   console.log(files);
 
-  const pickupCompleted = () => {
-    toast.success("Pickup Completed");
-    navigate("/homepage");
+  const pickupCompleted = async () => {
+    try {
+      const postPickupData = {
+        workShopImages: images,
+        vehImages,
+        pickUpData: singleVehicleData,
+      };
+
+      const response = await axios.post(
+        `http://localhost:8090/api/v1/pickUpData/addPickUpData`,
+        postPickupData
+      );
+      console.log(response?.data);
+      if (response?.data?.success) {
+        toast.success("Completed");
+        navigate("/homepage");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

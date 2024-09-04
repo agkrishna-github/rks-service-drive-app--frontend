@@ -162,7 +162,7 @@ const WorkshopMapPage = () => {
           className="w-[300px] p-3 border  bg-blue-600 text-white text-center"
           onClick={getUserLocation}
         >
-          Get Workshop Location
+          Start To Workshop
         </h4>
       </div>
 
