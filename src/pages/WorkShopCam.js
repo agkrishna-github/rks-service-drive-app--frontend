@@ -109,7 +109,7 @@ const WorkShopCam = () => {
           </div>
         </div>
       </div>
-      {images.length !== 0 && (
+      {source.length !== 0 && (
         <div className="flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] mb-20 mt-10">
           <h4
             className="w-[300px] p-3 border  bg-blue-600 text-white text-center"
