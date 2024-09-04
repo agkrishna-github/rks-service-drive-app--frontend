@@ -16,6 +16,7 @@ const Homepage = () => {
   const [regNum, setRegNum] = useState("");
 
   const [vehicleData, setVehicleData] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { auth } = useAuth();
   const { serviceData, setServiceData, storeSingleVehicleData } =
@@ -31,6 +32,7 @@ const Homepage = () => {
   }, [vehicleData]);
 
   const getSingleVehcleData = async (rNum) => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `${baseURL}/api/v1/vehicle/get-vehicle-details/${rNum}`
@@ -42,6 +44,7 @@ const Homepage = () => {
       if (vehicleData?.success) {
         console.log(vehicleData);
         setVehicleData(vehicleData?.foundVehicle);
+        setIsLoading(false);
         return;
       } else {
         toast.error("Error in fetching vehicle data");
@@ -90,15 +93,19 @@ const Homepage = () => {
         </div>
 
         <div className={vehicleData ? "hidden" : "block "}>
-          <Button
-            variant="contained"
-            type="button"
-            disabled={!regNum ? true : false}
-            onClick={() => getSingleVehcleData(regNum)}
-            className="block p-3 w-[200px] mx-auto"
-          >
-            Get Details
-          </Button>
+          {isLoading ? (
+            <div className="p-2 w-[75%] bg-red-500 text-white">Loading...</div>
+          ) : (
+            <Button
+              variant="contained"
+              type="button"
+              disabled={!regNum ? true : false}
+              onClick={() => getSingleVehcleData(regNum)}
+              className="block p-3 w-[200px] mx-auto"
+            >
+              Get Details
+            </Button>
+          )}
         </div>
         {vehicleData && (
           <div className="w-[90%] mx-auto shadow shadow-black min-h-[200px] flex flex-col justify-center items-center gap-y-3">

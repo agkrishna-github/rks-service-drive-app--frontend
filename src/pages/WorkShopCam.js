@@ -11,6 +11,8 @@ const WorkShopCam = () => {
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
   const [source, setSource] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isCompLoading, setIsCompLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -25,16 +27,21 @@ const WorkShopCam = () => {
   }, [files]);
 
   const addImage = async (imgData) => {
+    setIsLoading(true);
     const response = await axios.post(
       "http://localhost:8090/api/v1/image/addImages",
       imgData
     );
 
-    const uploadedImages = response.data;
-    setImages(uploadedImages);
+    const uploadedImages = response?.data;
+
+    if (uploadedImages) {
+      setImages(uploadedImages);
+      setIsLoading(false);
+    }
     console.log(uploadedImages);
   };
-  console.log(images);
+
   const handleCapture = (e) => {
     console.log(e);
 
@@ -52,6 +59,8 @@ const WorkShopCam = () => {
   console.log(files);
 
   const pickupCompleted = async () => {
+    setIsCompLoading(true);
+
     try {
       const postPickupData = {
         workShopImages: images,
@@ -63,8 +72,10 @@ const WorkShopCam = () => {
         `http://localhost:8090/api/v1/pickUpData/addPickUpData`,
         postPickupData
       );
+
       console.log(response?.data);
       if (response?.data?.success) {
+        setIsCompLoading(false);
         toast.success("Completed");
         navigate("/homepage");
       }
@@ -73,11 +84,17 @@ const WorkShopCam = () => {
     }
   };
 
+  console.log(images);
+
   return (
     <section className="min-h-screen flex flex-col gap-y-3 justify-center items-center">
       <h4 className="p-3 bg-blue-500 text-white w-full">
         Vehicle Handover To Workshop
       </h4>
+      {isLoading && <h3 className="p-3 bg-red-500 text-white">Loading...</h3>}
+      {isCompLoading && (
+        <h3 className="p-3 bg-red-500 text-white">Loading...</h3>
+      )}
       <div className="min-h-[300px] w-[90%] mx-auto shadow shadow-black  p-3 mt-3 flex flex-wrap gap-3">
         <div className="bg-white h-full camera text-end relative">
           <div>
