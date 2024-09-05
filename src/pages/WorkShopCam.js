@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useVehicleContext } from "../components/contextApi/vehiclesApi";
+import { baseURL } from "../utils/baseUrl";
 
 const WorkShopCam = () => {
   const [images, setImages] = useState([]);
@@ -67,9 +68,9 @@ const WorkShopCam = () => {
   };
 
   const pickupCompleted = async () => {
-    // setIsCompLoading(true);
+    setIsCompLoading(true);
 
-    /*  try {
+    try {
       const postPickupData = {
         workShopImage: source,
         vehImages,
@@ -77,21 +78,19 @@ const WorkShopCam = () => {
       };
 
       const response = await axios.post(
-        `http://localhost:8090/api/v1/pickUpData/addPickUpData`,
+        `${baseURL}/api/v1/pickUpData/addPickUpData`,
         postPickupData
       );
 
       console.log(response?.data);
 
-      setIsCompLoading(false);*/
-    toast.success("Completed");
-    navigate("/homepage");
-    /* } catch (error) {
+      setIsCompLoading(false);
+      toast.success("Completed");
+      navigate("/homepage");
+    } catch (error) {
       console.log(error);
-    } */
+    }
   };
-
-  // console.log(images);
 
   return (
     <section className="min-h-screen flex flex-col gap-y-3 justify-center items-center">
