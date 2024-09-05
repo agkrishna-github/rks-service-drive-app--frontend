@@ -56,7 +56,7 @@ const MapsPage = () => {
 
   useEffect(() => {
     getUserLocation();
-  }, [userLocation]);
+  }, []);
 
   useEffect(() => {
     getCoordinates(`${hno} ${street} ${area} ${city} ${state} `);
