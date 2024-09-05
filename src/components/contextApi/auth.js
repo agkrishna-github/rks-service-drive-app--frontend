@@ -9,7 +9,7 @@ const AuthProvider = ({ children }) => {
     token: "",
   });
   console.log(auth);
-  // axios.defaults.headers.common["Authorization"] = auth?.token;
+  axios.defaults.headers.common["Authorization"] = auth?.token;
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
