@@ -83,8 +83,8 @@ const WorkShopCam = () => {
 
       console.log(response?.data);
 
-      setIsCompLoading(false);
-      toast.success("Completed"); */
+      setIsCompLoading(false);*/
+    toast.success("Completed");
     navigate("/homepage");
     /* } catch (error) {
       console.log(error);
