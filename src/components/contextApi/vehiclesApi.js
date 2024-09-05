@@ -7,7 +7,7 @@ const VehiclesProvider = ({ children }) => {
   const [serviceData, setServiceData] = useState("");
   const [singleVehicleData, setSingleVehicleData] = useState();
   const [vehImages, setVehicleImages] = useState();
-
+  const [userLocation, setUserLocation] = useState();
   const storeSingleVehicleData = (data) => {
     setSingleVehicleData(data);
   };
@@ -21,6 +21,8 @@ const VehiclesProvider = ({ children }) => {
         storeSingleVehicleData,
         setVehicleImages,
         vehImages,
+        setUserLocation,
+        userLocation,
       }}
     >
       {children}

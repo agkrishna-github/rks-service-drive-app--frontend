@@ -19,8 +19,13 @@ const Homepage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { auth } = useAuth();
-  const { serviceData, setServiceData, storeSingleVehicleData } =
-    useVehicleContext();
+  const {
+    serviceData,
+    setServiceData,
+    storeSingleVehicleData,
+    userLocation,
+    setUserLocation,
+  } = useVehicleContext();
   const [service, setService] = useState("");
 
   const navigate = useNavigate();
@@ -52,6 +57,17 @@ const Homepage = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  useEffect(() => {
+    getUserLocation();
+  }, []);
+
+  const getUserLocation = () => {
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      console.log(pos);
+      setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+    });
   };
 
   const goToPickup = () => {

@@ -12,7 +12,6 @@ const MAPBOX_DRIVING_ENDPOINT =
   "https://api.mapbox.com/directions/v5/mapbox/driving/";
 
 const MapsPage = () => {
-  const [userLocation, setUserLocation] = useState();
   const [destinationCordinates, setDestinationCordinates] = useState({
     lng: 78.45736,
     lat: 17.42421,
@@ -22,7 +21,7 @@ const MapsPage = () => {
   const [sourceCordinates, setSourceCordinates] = useState();
   const [open, setOpen] = useState(true);
 
-  const { singleVehicleData } = useVehicleContext();
+  const { singleVehicleData, userLocation } = useVehicleContext();
 
   const navigate = useNavigate();
 
@@ -30,33 +29,15 @@ const MapsPage = () => {
 
   console.log(singleVehicleData);
 
-  /* 
-  {
-    console.log(singleVehicleData);
-  area: "Sanath Nagar";
-  city: "Hyderabad";
-  color: "SIZZILING RED";
-  custName: "K SUKUMAR";
-  hno: "22-13";
-  mandal: "Hyderabad";
-  phoneNum: "9845685214";
-  pincode: "500040";
-  regNum: "TS10FF1010";
-  state: "Telangana";
-  street: "SRINIVAS NAGAR";
-  vehicleModel: "MARUTI ALTO 800 VXI";
-  _id: "66d13559e6c2d49382787451";
-} */
-
   const { hno, street, area, city, state } = singleVehicleData;
 
   console.log(hno, street, area, city, state);
 
   const mapRef = useRef();
-
+  /* 
   useEffect(() => {
     getUserLocation();
-  }, []);
+  }, []); */
 
   useEffect(() => {
     getCoordinates(`${hno} ${street} ${area} ${city} ${state} `);
@@ -171,7 +152,7 @@ const MapsPage = () => {
     console.log(result);
     setDirectionData(result);
   };
-
+  /* 
   const getUserLocation = () => {
     navigator.geolocation.getCurrentPosition(function (pos) {
       console.log(pos);
@@ -179,7 +160,7 @@ const MapsPage = () => {
     });
     console.log(userLocation);
   };
-
+ */
   const getCoordinates = async (address) => {
     const response = await fetch(
       "https://maps.googleapis.com/maps/api/geocode/json?address=" +
