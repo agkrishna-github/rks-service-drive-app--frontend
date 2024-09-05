@@ -80,7 +80,7 @@ const Login = () => {
     <section className="h-svh bg-blue-300 flex justify-center items-center">
       <div className="p-5 md:w-11/12 md:mx-auto md:h-[50%] md:my-auto shadow shadow-black bg-white rounded-md flex flex-col justify-center gap-y-10">
         {error && <p className="text-red-700">{error}</p>}
-        <h3>Login NEW</h3>
+        <h3>Login</h3>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-y-10">
           <div className="flex flex-col gap-y-5 w-[75%]">

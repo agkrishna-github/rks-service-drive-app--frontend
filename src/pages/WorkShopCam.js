@@ -67,9 +67,9 @@ const WorkShopCam = () => {
   };
 
   const pickupCompleted = async () => {
-    setIsCompLoading(true);
+    // setIsCompLoading(true);
 
-    try {
+    /*  try {
       const postPickupData = {
         workShopImage: source,
         vehImages,
@@ -84,14 +84,14 @@ const WorkShopCam = () => {
       console.log(response?.data);
 
       setIsCompLoading(false);
-      toast.success("Completed");
-      navigate("/homepage");
-    } catch (error) {
+      toast.success("Completed"); */
+    navigate("/homepage");
+    /* } catch (error) {
       console.log(error);
-    }
+    } */
   };
 
-  console.log(images);
+  // console.log(images);
 
   return (
     <section className="min-h-screen flex flex-col gap-y-3 justify-center items-center">
