@@ -77,14 +77,8 @@ const Homepage = () => {
   };
 
   const goToWorkshop = () => {
-    /*  const dropData = {
-      empId: auth?.user?.id,
-      vehDetails: vehicleData?.data?.foundVehicle,
-      service: service,
-    };
-    navigate("/dropMapPage", {
-      state: { dropData: dropData },
-    }); */
+   
+    navigate("/dropMapPage"); 
   };
 
   const logout = () => {

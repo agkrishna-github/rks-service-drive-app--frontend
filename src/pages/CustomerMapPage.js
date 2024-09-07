@@ -4,6 +4,7 @@ import pin from "../images/pin.png";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { useVehicleContext } from "../components/contextApi/vehiclesApi";
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 const MAPBOX_DRIVING_ENDPOINT =
@@ -28,13 +29,12 @@ const CustomerMapPage = () => {
   const [destinationCordinates, setDestinationCordinates] = useState();
   const [directionData, setDirectionData] = useState();
   const [dropDirectionData, setDropDirectionData] = useState();
+  const [open, setOpen] = useState();
 
   const navigate = useNavigate();
+  const { singleVehicleData } = useVehicleContext();
 
-  console.log(directionData);
-  const { state: vehState } = useLocation();
-
-  const { hno, street, area, city, state } = vehState?.dropData?.vehDetails;
+  const { hno, street, area, city, state } = singleVehicleData;
 
   console.log(hno, street, area, city, state);
 
@@ -61,25 +61,6 @@ const CustomerMapPage = () => {
     }
   }, [destinationCordinates]);
 
-  const startDrop = () => {
-    mapRef.current?.flyTo({
-      center: [userLocation?.lng, userLocation?.lat],
-      duration: 2500,
-      zoom: 15,
-    });
-    // setOpen(false);
-  };
-
-  const arrived = () => {
-    navigate("/custCameraComp", {
-      state: {
-        dropData: vehState?.dropData,
-        directionData,
-        dropDirectionData,
-      },
-    });
-  };
-
   useEffect(() => {
     if (destinationCordinates) {
       mapRef.current?.flyTo({
@@ -91,7 +72,7 @@ const CustomerMapPage = () => {
     if (sourceCordinates && destinationCordinates) {
       getDropDirectionRoute();
     }
-  }, [destinationCordinates]);
+  }, [sourceCordinates || destinationCordinates]);
 
   useEffect(() => {
     if (sourceCordinates) {
@@ -191,8 +172,18 @@ const CustomerMapPage = () => {
     });
   };
 
+  const dropCompleted = () => {
+    navigate("/custCameraComp");
+    setOpen(true);
+  };
+
   return (
     <div>
+      <div>
+        <h3 className="p-3 bg-blue-950 text-white">
+          Going To Customer Location
+        </h3>
+      </div>
       <Map
         ref={mapRef}
         mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
@@ -214,7 +205,7 @@ const CustomerMapPage = () => {
           </Marker>
         )}
 
-        {sourceCordinates && (
+        {/*   {sourceCordinates && (
           <Marker
             longitude={sourceCordinates?.lng}
             latitude={sourceCordinates?.lat}
@@ -222,7 +213,7 @@ const CustomerMapPage = () => {
           >
             <img src={pin} alt="location pic" width={50} height={50} />
           </Marker>
-        )}
+        )} */}
         {destinationCordinates && (
           <Marker
             longitude={destinationCordinates.lng}
@@ -233,7 +224,7 @@ const CustomerMapPage = () => {
           </Marker>
         )}
 
-        {dropDirectionData?.routes && (
+        {/*  {dropDirectionData?.routes && (
           <Source
             type="geojson"
             data={{
@@ -251,7 +242,7 @@ const CustomerMapPage = () => {
               paint={{ "line-color": "#0462d4", "line-width": 4 }}
             ></Layer>
           </Source>
-        )}
+        )} */}
 
         {directionData?.routes && (
           <Source
@@ -274,8 +265,8 @@ const CustomerMapPage = () => {
       </Map>
 
       {directionData?.routes && (
-        <div className="mt-10 p-5 shadow shadow-black">
-          <h5 className="mt-5">To Workshop</h5>
+        <div className="p-5 shadow shadow-black bg-yellow-200">
+          <h5 className="mt-5">To Customer Location</h5>
           <p className="mt-5">
             Distance : {(directionData?.routes[0]?.distance * 0.001).toFixed(2)}{" "}
             Kms
@@ -286,7 +277,7 @@ const CustomerMapPage = () => {
           </p>
         </div>
       )}
-      {dropDirectionData?.routes && (
+      {/*   {dropDirectionData?.routes && (
         <div className="mt-10 p-5 shadow shadow-black">
           <h5 className="mt-5">To Drop</h5>
           <p className="mt-5">
@@ -318,7 +309,7 @@ const CustomerMapPage = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       {/*  <div className="mt-10 ms-5 mb-20">
         <Button
@@ -329,6 +320,35 @@ const CustomerMapPage = () => {
           Reached Workshop
         </Button>
       </div> */}
+      <div
+        className={
+          open
+            ? "flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] mt-10"
+            : "hidden"
+        }
+      >
+        <h4
+          className="w-[300px] p-3 border  bg-blue-600 text-white text-center"
+          onClick={getUserLocation}
+        >
+          Start To Customer Location
+        </h4>
+      </div>
+
+      <div
+        className={
+          !open
+            ? "flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] mt-10"
+            : "hidden"
+        }
+      >
+        <h4
+          className="w-[300px] p-3 border  bg-blue-600 text-white text-center"
+          onClick={dropCompleted}
+        >
+          Reached Customer Location
+        </h4>
+      </div>
     </div>
   );
 };

@@ -4,6 +4,7 @@ import pin from "../images/pin.png";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { useVehicleContext } from "../components/contextApi/vehiclesApi";
 const MAPBOX_ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 const MAPBOX_DRIVING_ENDPOINT =
@@ -28,13 +29,15 @@ const DropMapPage = () => {
   const [destinationCordinates, setDestinationCordinates] = useState();
   const [directionData, setDirectionData] = useState();
   const [dropDirectionData, setDropDirectionData] = useState();
+  const [open, setOpen] = useState(true);
 
   const navigate = useNavigate();
 
-  console.log(directionData);
-  const { state: vehState } = useLocation();
+  const { singleVehicleData } = useVehicleContext();
 
-  const { hno, street, area, city, state } = vehState?.dropData?.vehDetails;
+  console.log(singleVehicleData);
+
+  const { hno, street, area, city, state } = singleVehicleData;
 
   console.log(hno, street, area, city, state);
 
@@ -71,13 +74,7 @@ const DropMapPage = () => {
   };
 
   const arrived = () => {
-    navigate("/dropCameraComp", {
-      state: {
-        dropData: vehState?.dropData,
-        directionData,
-        dropDirectionData,
-      },
-    });
+    navigate("/dropCameraComp");
   };
 
   useEffect(() => {
@@ -191,8 +188,26 @@ const DropMapPage = () => {
     });
   };
 
+  const goToWorkshop = () => {
+    mapRef.current?.flyTo({
+      center: [userLocation?.lng, userLocation?.lat],
+      duration: 2500,
+      zoom: 15,
+    });
+    setOpen(false);
+  };
+  const reachedWorkshop = () => {
+    navigate("/dropCameraComp");
+    setOpen(true);
+  };
+
   return (
     <div>
+      <div>
+        <h3 className="p-2 bg-blue-950 text-white">
+          Going To Workshop Location
+        </h3>
+      </div>
       <Map
         ref={mapRef}
         mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
@@ -274,8 +289,10 @@ const DropMapPage = () => {
       </Map>
 
       {directionData?.routes && (
-        <div className="mt-10 p-5 shadow shadow-black">
-          <h5 className="mt-5">To Workshop</h5>
+        <div className="p-5 shadow shadow-black bg-yellow-200">
+          <h4 className="mt-5 bg-blue-950 text-white p-2">
+            To Workshop Location
+          </h4>
           <p className="mt-5">
             Distance : {(directionData?.routes[0]?.distance * 0.001).toFixed(2)}{" "}
             Kms
@@ -287,8 +304,8 @@ const DropMapPage = () => {
         </div>
       )}
       {dropDirectionData?.routes && (
-        <div className="mt-10 p-5 shadow shadow-black">
-          <h5 className="mt-5">To Drop</h5>
+        <div className="p-5 shadow shadow-black bg-yellow-200">
+          <h4 className="mt-5 bg-blue-950 text-white p-2">To Drop Location</h4>
           <p className="mt-5">
             Distance :{" "}
             {(dropDirectionData?.routes[0]?.distance * 0.001).toFixed(2)} Kms
@@ -297,38 +314,36 @@ const DropMapPage = () => {
             Duration :{" "}
             {(dropDirectionData?.routes[0]?.duration / 60).toFixed(2)} Min
           </p>
-          <div className="mt-10 flex gap-5">
-            <div>
-              <Button
-                variant="contained"
-                className="p-3 ms-3"
-                onClick={startDrop}
-              >
-                Start Drop
-              </Button>
-            </div>
-            <div>
-              <Button
-                variant="contained"
-                className=" p-3 ms-3"
-                onClick={arrived}
-              >
-                Arrived
-              </Button>
-            </div>
-          </div>
         </div>
       )}
-
-      {/*  <div className="mt-10 ms-5 mb-20">
-        <Button
-          variant="contained"
-          className="inline-block w-[250px] mx-auto p-3 me-5"
-          onClick={reachedWorkShop}
+      <div className="mt-10 flex gap-5">
+        <div
+          className={
+            !open
+              ? "hidden"
+              : "flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] mb-20"
+          }
         >
-          Reached Workshop
-        </Button>
-      </div> */}
+          <h4
+            className="w-[300px] p-3 border  bg-blue-600 text-white text-center"
+            onClick={goToWorkshop}
+          >
+            Go To Workshop Location
+          </h4>
+        </div>
+        <div
+          className={
+            open
+              ? "hidden"
+              : "flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] mb-10"
+          }
+          onClick={reachedWorkshop}
+        >
+          <h4 className="w-[300px] p-3 border  bg-red-600 text-white text-center">
+            Reached workshop Location
+          </h4>
+        </div>
+      </div>
     </div>
   );
 };

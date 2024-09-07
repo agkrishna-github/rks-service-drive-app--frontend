@@ -3,19 +3,22 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaCamera } from "react-icons/fa";
 import cloud from "../images/cloud1.png";
 import Button from "@mui/material/Button";
+import { toast } from "react-hot-toast";
 
 import axios from "axios";
+import { baseURL } from "../utils/baseUrl";
+import { useVehicleContext } from "../components/contextApi/vehiclesApi";
 
 const CustomerCameraComp = () => {
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
-
+  const [source, setSource] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { state } = useLocation();
+  const { vehImages, singleVehicleData } = useVehicleContext();
 
-  const { dropData, directionData, pickupDirectionData } = state;
-
+  /* 
   useEffect(() => {
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
@@ -34,7 +37,7 @@ const CustomerCameraComp = () => {
     setImages(uploadedImages);
     console.log(uploadedImages);
   };
-
+ */
   const handleCapture = (e) => {
     console.log(e);
 
@@ -42,7 +45,8 @@ const CustomerCameraComp = () => {
     if (e.target.files) {
       if (e.target.files.length !== 0) {
         const file = e.target.files[0];
-        setFiles([...files, file]);
+        const newUrl = URL.createObjectURL(file);
+        setSource(newUrl);
         /* 
         console.log(file);
         const newUrl = URL.createObjectURL(file);
@@ -54,20 +58,22 @@ const CustomerCameraComp = () => {
   console.log(files);
 
   const dropCompleted = async () => {
+    setIsLoading(true);
     const postDropData = {
-      images: images,
-      dropData: dropData,
+      customerImage: source,
+      vehImages,
+      dropData: singleVehicleData,
     };
 
     try {
       const response = await axios.post(
-        "http://localhost:8090/api/v1/dropData/addDropData",
+        `${baseURL}/api/v1/dropData/addDropData`,
         postDropData
       );
 
-      if (response?.data?.success) {
-        navigate("/homepage");
-      }
+      setIsLoading(false);
+      toast.success("Completed");
+      navigate("/homepage");
     } catch (error) {
       console.log(error);
     }
@@ -75,13 +81,15 @@ const CustomerCameraComp = () => {
 
   return (
     <section className="min-h-screen flex flex-col gap-y-3 justify-center items-center">
-      <h4>Vehicle Handover To Customer</h4>
+      <h4 className="bg-blue-950 text-white p-3 w-full">
+        Vehicle Handover To Customer
+      </h4>
       <div className="min-h-[300px] w-[90%] mx-auto shadow shadow-black  p-3 mt-3 flex flex-wrap gap-3">
         <div className="bg-white h-full camera text-end relative">
           <div>
             <div className="w-[300px] h-[300px]">
               <img
-                src={images[0]?.url || cloud}
+                src={source || cloud}
                 alt={"snap"}
                 className="w-full h-full"
                 width={400}
@@ -107,7 +115,7 @@ const CustomerCameraComp = () => {
           </div>
         </div>
       </div>
-      {images.length !== 0 && (
+      {source && (
         <div className="mt-3 ">
           <Button
             variant="contained"

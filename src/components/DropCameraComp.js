@@ -4,36 +4,20 @@ import { FaCamera } from "react-icons/fa";
 import axios from "axios";
 import cloud from "../images/cloud1.png";
 import Button from "@mui/material/Button";
+import { useVehicleContext } from "./contextApi/vehiclesApi";
 
 const DropCameraComp = () => {
-  const { state } = useLocation();
-
-  const { dropData, directionData, dropDirectionData } = state;
+  const { singleVehicleData, setVehicleImages } = useVehicleContext();
 
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
+  const [source, setSource] = useState([]);
+  console.log(source);
+  const [isLoading, setIsLoading] = useState(false);
+  console.log(isLoading);
   console.log(images);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append("images", files[i]);
-    }
-    if (files.length) addImage(formData);
-  }, [files]);
-
-  const addImage = async (imgData) => {
-    const response = await axios.post(
-      "http://localhost:8090/api/v1/image/addImages",
-      imgData
-    );
-
-    const uploadedImages = await response.data;
-    setImages(uploadedImages);
-    console.log(uploadedImages);
-  };
 
   const handleCapture = (e) => {
     console.log(e);
@@ -42,11 +26,8 @@ const DropCameraComp = () => {
     if (e.target.files) {
       if (e.target.files.length !== 0) {
         const file = e.target.files[0];
-        setFiles([...files, file]);
-        /* 
-        console.log(file);
         const newUrl = URL.createObjectURL(file);
-        setImages([...images, newUrl]); */
+        setSource([...source, newUrl]);
       }
     }
   };
@@ -54,20 +35,19 @@ const DropCameraComp = () => {
   console.log(files);
 
   const goToDrop = () => {
-    navigate("/customerMapPage", {
-      state: { images: images, dropData: dropData },
-    });
+    setVehicleImages(source);
+    navigate("/customerMapPage");
   };
 
   return (
     <section className="min-h-screen flex flex-col gap-y-3 justify-center items-center">
-      <h4>Drop Vehicle Photos</h4>
+      <h4 className="p-3 bg-blue-950 text-white w-full">Vehicle Photos</h4>
       <div className="min-h-[500px] w-[90%] mx-auto shadow shadow-black bg-blue-300 p-3 mt-3 flex flex-wrap gap-3">
         <div className="bg-white w-[150px] h-[150px] camera text-end relative">
           <div>
             <div className="maindiv ">
               <img
-                src={images[0]?.url || cloud}
+                src={source[0] || cloud}
                 alt={"snap"}
                 className="imgdiv"
                 width={200}
@@ -96,7 +76,7 @@ const DropCameraComp = () => {
           <div>
             <div className="maindiv ">
               <img
-                src={images[1]?.url || cloud}
+                src={source[1] || cloud}
                 alt={"snap"}
                 className="imgdiv"
               ></img>
@@ -212,15 +192,14 @@ const DropCameraComp = () => {
           </div>
         </div> */}
       </div>
-      {images.length === 2 && (
-        <div className="mt-3 ">
-          <Button
-            variant="contained"
-            className="block w-[200px] mx-auto p-3 bg-blue-400 text-white"
+      {source.length === 2 && (
+        <div className="flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] ">
+          <h4
+            className="w-[300px] p-3 border  bg-blue-600 text-white text-center"
             onClick={goToDrop}
           >
-            Go To Drop
-          </Button>
+            Upload
+          </h4>
         </div>
       )}
       {/* 

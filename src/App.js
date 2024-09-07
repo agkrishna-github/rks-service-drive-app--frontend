@@ -23,16 +23,27 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route element={<PrivateRoutes />}>
           <Route path="homepage" element={<Homepage />} />
+
+          {/* ............PICKUP.................. */}
+
           <Route path="mapPage" element={<MapsPage />} />
-          <Route path="dropMapPage" element={<DropMapPage />} />
-          {/* <Route path="/pickUpMapComp" element={<PickUpMapComp />} /> */}
           <Route path="pickUpCameraComp" element={<PickUpCameraComp />} />
-          <Route path="dropCameraComp" element={<DropCameraComp />} />
-          <Route path="workShopCam" element={<WorkShopCam />} />
           <Route path="workShopMapPage" element={<WorkshopMapPage />} />
+          <Route path="workShopCam" element={<WorkShopCam />} />
+
+          {/* ............PICKUP END.................. */}
+
+          {/* ............DROP.................. */}
+
+          <Route path="dropMapPage" element={<DropMapPage />} />
+          <Route path="dropCameraComp" element={<DropCameraComp />} />
           <Route path="customerMapPage" element={<CustomerMapPage />} />
           <Route path="custCameraComp" element={<CustomerCameraComp />} />
+
+          {/* ............DROP END.................. */}
+
           {/* <Route path="/cameraComp" element={<CameraComp />} /> */}
+          {/* <Route path="/pickUpMapComp" element={<PickUpMapComp />} /> */}
         </Route>
       </Routes>
     </div>
