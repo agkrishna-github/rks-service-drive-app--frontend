@@ -183,7 +183,7 @@ const MapsPage = () => {
   return (
     <div>
       <div>
-        <h3 className="p-2 bg-blue-500 text-white">
+        <h3 className="p-2 bg-blue-950 text-white">
           Going To Customer Location
         </h3>
       </div>
@@ -270,7 +270,7 @@ const MapsPage = () => {
 
       {pickupDirectionData?.routes && (
         <div className="p-5 shadow shadow-black bg-yellow-200">
-          <h4 className="mt-5 bg-blue-500 text-white p-2">
+          <h4 className="mt-5 bg-blue-950 text-white p-2">
             To Pickup Location
           </h4>
           <p className="mt-5">
@@ -292,7 +292,7 @@ const MapsPage = () => {
         <div
           className={!open ? "hidden" : "p-5 shadow shadow-black bg-yellow-200"}
         >
-          <h4 className="mt-5 bg-blue-500 text-white p-2">
+          <h4 className="mt-5 bg-blue-950 text-white p-2">
             To Workshop Location
           </h4>
           <p className="mt-5">

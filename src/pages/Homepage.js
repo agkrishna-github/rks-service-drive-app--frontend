@@ -13,6 +13,8 @@ import { baseURL } from "../utils/baseUrl";
 import toast from "react-hot-toast";
 
 const Homepage = () => {
+  const { setAuth } = useAuth();
+
   const [regNum, setRegNum] = useState("");
 
   const [vehicleData, setVehicleData] = useState();
@@ -85,13 +87,24 @@ const Homepage = () => {
     }); */
   };
 
+  const logout = () => {
+    setAuth({
+      user: null,
+      token: "",
+    });
+    navigate("/homepage");
+  };
+
   return (
     <section className="min-h-screen bg-blue-300 flex justify-center items-center">
       <div className="p-5 md:w-11/12 md:mx-auto md:min-h-[75%] md:my-auto shadow shadow-black bg-white rounded-md flex flex-col  gap-y-10">
-        <div className="bg-black self-end text-white p-3 text-center">
+        <div
+          className="bg-black self-end text-white p-3 text-center rounded-md"
+          onClick={logout}
+        >
           Logout
         </div>
-        <h3 className="p-3 bg-blue-500 text-white">
+        <h3 className="p-3 bg-blue-950 text-white rounded-md">
           {auth?.user?.driver && (auth?.user?.driver).toUpperCase()} Logged in
         </h3>
 
@@ -110,7 +123,9 @@ const Homepage = () => {
 
         <div className={vehicleData ? "hidden" : "block "}>
           {isLoading ? (
-            <div className="p-2 w-[75%] bg-red-500 text-white">Loading...</div>
+            <div className="p-2 w-[75%] bg-red-950 text-white rounded-lg">
+              Loading...
+            </div>
           ) : (
             <Button
               variant="contained"

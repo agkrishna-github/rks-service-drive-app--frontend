@@ -84,7 +84,7 @@ const WorkshopMapPage = () => {
   return (
     <div>
       <div>
-        <h3 className="p-2 bg-blue-500 text-white">Going To Workshop</h3>
+        <h3 className="p-3 bg-blue-950 text-white">Going To Workshop</h3>
       </div>
       <Map
         ref={mapRef}

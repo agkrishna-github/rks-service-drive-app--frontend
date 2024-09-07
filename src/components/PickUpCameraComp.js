@@ -78,8 +78,10 @@ const PickUpCameraComp = () => {
 
   return (
     <section className="min-h-screen flex flex-col gap-y-3 justify-center items-center">
-      {isLoading && <h3 className="p-3 bg-red-500 text-white">Loading...</h3>}
-      <h4 className="p-3 bg-blue-500 text-white w-full">Vehicle Photos</h4>
+      {isLoading && (
+        <h3 className="p-3 bg-red-950 text-white rounded-lg">Loading...</h3>
+      )}
+      <h4 className="p-3 bg-blue-950 text-white w-full">Vehicle Photos</h4>
       <div className="min-h-[500px] w-[90%] mx-auto shadow shadow-black bg-blue-300 p-3 mt-3 flex flex-wrap gap-3">
         <div className="bg-white w-[150px] h-[150px] camera text-end relative">
           <div>

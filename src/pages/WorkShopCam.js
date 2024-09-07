@@ -94,12 +94,14 @@ const WorkShopCam = () => {
 
   return (
     <section className="min-h-screen flex flex-col gap-y-3 justify-center items-center">
-      <h4 className="p-3 bg-blue-500 text-white w-full">
+      <h4 className="p-3 bg-blue-950 text-white w-full">
         Vehicle Handover To Workshop
       </h4>
-      {isLoading && <h3 className="p-3 bg-red-500 text-white">Loading...</h3>}
+      {isLoading && (
+        <h3 className="p-3 bg-red-950 rounded-lg text-white">Loading...</h3>
+      )}
       {isCompLoading && (
-        <h3 className="p-3 bg-red-500 text-white">Loading...</h3>
+        <h3 className="p-3 bg-red-950 text-white">Loading...</h3>
       )}
       <div className="min-h-[300px] w-[90%] mx-auto shadow shadow-black  p-3 mt-3 flex flex-wrap gap-3">
         <div className="bg-white h-full camera text-end relative">
