@@ -99,10 +99,14 @@ const DropCameraComp = () => {
             </label>
           </div>
         </div>
-        {/*  <div className="bg-white w-[150px] h-[150px] camera text-end relative">
+        <div className="bg-white w-[150px] h-[150px] camera text-end relative">
           <div>
             <div className="maindiv ">
-              <img src={images[2]} alt={"snap"} className="imgdiv"></img>
+              <img
+                src={source[2] || cloud}
+                alt={"snap"}
+                className="imgdiv"
+              ></img>
             </div>
 
             <input
@@ -125,7 +129,11 @@ const DropCameraComp = () => {
         <div className="bg-white w-[150px] h-[150px] camera text-end relative">
           <div>
             <div className="maindiv ">
-              <img src={images[3]} alt={"snap"} className="imgdiv"></img>
+              <img
+                src={source[3] || cloud}
+                alt={"snap"}
+                className="imgdiv"
+              ></img>
             </div>
 
             <input
@@ -148,7 +156,11 @@ const DropCameraComp = () => {
         <div className="bg-white w-[150px] h-[150px] camera text-end relative">
           <div>
             <div className="maindiv ">
-              <img src={images[4]} alt={"snap"} className="imgdiv"></img>
+              <img
+                src={source[4] || cloud}
+                alt={"snap"}
+                className="imgdiv"
+              ></img>
             </div>
 
             <input
@@ -171,7 +183,11 @@ const DropCameraComp = () => {
         <div className="bg-white w-[150px] h-[150px] camera text-end relative">
           <div>
             <div className="maindiv ">
-              <img src={images[5]} alt={"snap"} className="imgdiv"></img>
+              <img
+                src={source[5] || cloud}
+                alt={"snap"}
+                className="imgdiv"
+              ></img>
             </div>
 
             <input
@@ -190,9 +206,9 @@ const DropCameraComp = () => {
               <FaCamera className="" />
             </label>
           </div>
-        </div> */}
+        </div>
       </div>
-      {source.length === 2 && (
+      {source.length === 6 && (
         <div className="flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] ">
           <h4
             className="w-[300px] p-3 border  bg-blue-600 text-white text-center"

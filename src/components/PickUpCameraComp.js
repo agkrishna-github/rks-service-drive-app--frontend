@@ -84,28 +84,27 @@ const PickUpCameraComp = () => {
       <h4 className="p-3 bg-blue-950 text-white w-full">Vehicle Photos</h4>
       <div className="min-h-[500px] w-[90%] mx-auto shadow shadow-black bg-blue-300 p-3 mt-3 flex flex-wrap gap-3">
         <div className="bg-white w-[150px] h-[150px] camera text-end relative">
-          <div>
-            <div className="maindiv ">
-              <img
-                src={source[0] || cloud}
-                alt={"snap"}
-                className="imgdiv"
-                width={200}
-                height={200}
-              ></img>
-            </div>
-
-            <input
-              accept="image/*"
-              id="icon-button-file"
-              type="file"
-              capture="environment"
-              onChange={(e) => {
-                handleCapture(e);
-              }}
-              style={{ display: "none" }}
-            />
+          <div className="maindiv ">
+            <img
+              src={source[0] || cloud}
+              alt={"snap"}
+              className="imgdiv"
+              width={200}
+              height={200}
+            ></img>
           </div>
+
+          <input
+            accept="image/*"
+            id="icon-button-file"
+            type="file"
+            capture="environment"
+            onChange={(e) => {
+              handleCapture(e);
+            }}
+            style={{ display: "none" }}
+          />
+
           <div className="absolute top-0 right-0 z-10">
             <label htmlFor="icon-button-file">
               <FaCamera className="" />
@@ -113,49 +112,21 @@ const PickUpCameraComp = () => {
           </div>
         </div>
         <div className="bg-white w-[150px] h-[150px] camera text-end relative">
-          <div>
-            <div className="maindiv ">
-              <img
-                src={source[1] || cloud}
-                alt={"snap"}
-                className="imgdiv"
-              ></img>
-            </div>
+          <div className="maindiv ">
+            <img src={source[1] || cloud} alt={"snap"} className="imgdiv"></img>
+          </div>
 
-            <input
-              accept="image/*"
-              id="icon-button-file"
-              type="file"
-              capture="environment"
-              onChange={(e) => {
-                handleCapture(e);
-              }}
-              style={{ display: "none" }}
-            />
-          </div>
-          <div className="absolute top-0 right-0 z-10">
-            <label htmlFor="icon-button-file">
-              <FaCamera className="" />
-            </label>
-          </div>
-        </div>
-        {/*  <div className="bg-white w-[150px] h-[150px] camera text-end relative">
-          <div>
-            <div className="maindiv ">
-              <img src={images[2]} alt={"snap"} className="imgdiv"></img>
-            </div>
+          <input
+            accept="image/*"
+            id="icon-button-file"
+            type="file"
+            capture="environment"
+            onChange={(e) => {
+              handleCapture(e);
+            }}
+            style={{ display: "none" }}
+          />
 
-            <input
-              accept="image/*"
-              id="icon-button-file"
-              type="file"
-              capture="environment"
-              onChange={(e) => {
-                handleCapture(e);
-              }}
-              style={{ display: "none" }}
-            />
-          </div>
           <div className="absolute top-0 right-0 z-10">
             <label htmlFor="icon-button-file">
               <FaCamera className="" />
@@ -163,22 +134,21 @@ const PickUpCameraComp = () => {
           </div>
         </div>
         <div className="bg-white w-[150px] h-[150px] camera text-end relative">
-          <div>
-            <div className="maindiv ">
-              <img src={images[3]} alt={"snap"} className="imgdiv"></img>
-            </div>
-
-            <input
-              accept="image/*"
-              id="icon-button-file"
-              type="file"
-              capture="environment"
-              onChange={(e) => {
-                handleCapture(e);
-              }}
-              style={{ display: "none" }}
-            />
+          <div className="maindiv ">
+            <img src={source[2] || cloud} alt={"snap"} className="imgdiv"></img>
           </div>
+
+          <input
+            accept="image/*"
+            id="icon-button-file"
+            type="file"
+            capture="environment"
+            onChange={(e) => {
+              handleCapture(e);
+            }}
+            style={{ display: "none" }}
+          />
+
           <div className="absolute top-0 right-0 z-10">
             <label htmlFor="icon-button-file">
               <FaCamera className="" />
@@ -186,22 +156,21 @@ const PickUpCameraComp = () => {
           </div>
         </div>
         <div className="bg-white w-[150px] h-[150px] camera text-end relative">
-          <div>
-            <div className="maindiv ">
-              <img src={images[4]} alt={"snap"} className="imgdiv"></img>
-            </div>
-
-            <input
-              accept="image/*"
-              id="icon-button-file"
-              type="file"
-              capture="environment"
-              onChange={(e) => {
-                handleCapture(e);
-              }}
-              style={{ display: "none" }}
-            />
+          <div className="maindiv ">
+            <img src={source[3] || cloud} alt={"snap"} className="imgdiv"></img>
           </div>
+
+          <input
+            accept="image/*"
+            id="icon-button-file"
+            type="file"
+            capture="environment"
+            onChange={(e) => {
+              handleCapture(e);
+            }}
+            style={{ display: "none" }}
+          />
+
           <div className="absolute top-0 right-0 z-10">
             <label htmlFor="icon-button-file">
               <FaCamera className="" />
@@ -209,30 +178,51 @@ const PickUpCameraComp = () => {
           </div>
         </div>
         <div className="bg-white w-[150px] h-[150px] camera text-end relative">
-          <div>
-            <div className="maindiv ">
-              <img src={images[5]} alt={"snap"} className="imgdiv"></img>
-            </div>
-
-            <input
-              accept="image/*"
-              id="icon-button-file"
-              type="file"
-              capture="environment"
-              onChange={(e) => {
-                handleCapture(e);
-              }}
-              style={{ display: "none" }}
-            />
+          <div className="maindiv ">
+            <img src={source[4] || cloud} alt={"snap"} className="imgdiv"></img>
           </div>
+
+          <input
+            accept="image/*"
+            id="icon-button-file"
+            type="file"
+            capture="environment"
+            onChange={(e) => {
+              handleCapture(e);
+            }}
+            style={{ display: "none" }}
+          />
+
           <div className="absolute top-0 right-0 z-10">
             <label htmlFor="icon-button-file">
               <FaCamera className="" />
             </label>
           </div>
-        </div> */}
+        </div>
+        <div className="bg-white w-[150px] h-[150px] camera text-end relative">
+          <div className="maindiv ">
+            <img src={source[5] || cloud} alt={"snap"} className="imgdiv"></img>
+          </div>
+
+          <input
+            accept="image/*"
+            id="icon-button-file"
+            type="file"
+            capture="environment"
+            onChange={(e) => {
+              handleCapture(e);
+            }}
+            style={{ display: "none" }}
+          />
+
+          <div className="absolute top-0 right-0 z-10">
+            <label htmlFor="icon-button-file">
+              <FaCamera className="" />
+            </label>
+          </div>
+        </div>
       </div>
-      {source.length === 2 && (
+      {source.length === 6 && (
         <div className="flex justify-center items-center w-full  bg-blue-300 text-white h-[50px] ">
           <h4
             className="w-[300px] p-3 border  bg-blue-600 text-white text-center"
