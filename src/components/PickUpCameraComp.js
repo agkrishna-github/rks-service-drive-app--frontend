@@ -82,7 +82,7 @@ const PickUpCameraComp = () => {
         <h3 className="p-3 bg-red-950 text-white rounded-lg">Loading...</h3>
       )}
       <h4 className="p-3 bg-blue-950 text-white w-full">Vehicle Photos</h4>
-      <div className="min-h-[500px] w-[90%] mx-auto shadow shadow-black bg-blue-300 p-3 mt-3 flex flex-wrap gap-3">
+      <div className="min-h-[500px] w-full mx-auto shadow shadow-black bg-blue-300 p-1 mt-3 flex flex-wrap justify-center items-center gap-3">
         <div className="bg-white w-[150px] h-[150px] camera text-end relative">
           <div className="maindiv ">
             <img
