@@ -62,6 +62,18 @@ const Homepage = () => {
   };
 
   useEffect(() => {
+    const watchID = navigator.geolocation.watchPosition((pos) => {
+      console.log(pos);
+      setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+    });
+    /* 
+    return () => {
+      navigator.geolocation.clearWatch(watchID);
+    }; */
+  }, [userLocation]);
+
+  /* 
+  useEffect(() => {
     getUserLocation();
   }, []);
 
@@ -71,14 +83,13 @@ const Homepage = () => {
       setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
     });
   };
-
+ */
   const goToPickup = () => {
     navigate("/mapPage");
   };
 
   const goToWorkshop = () => {
-   
-    navigate("/dropMapPage"); 
+    navigate("/dropMapPage");
   };
 
   const logout = () => {
